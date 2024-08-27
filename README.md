@@ -20,6 +20,10 @@ ProgressBarGroup for showing a group of related item with progress.
 npm install
 ```
 
+```
+npm install vue-chartjs chart.js
+```
+
 ## local testing
 ```bash
 npm run dev
