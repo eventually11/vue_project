@@ -15,14 +15,14 @@
           <div class="info-title">YTD Orders</div>
           <div class="info-value">
             <div class="info-main-value ytd-orders">204</div>
-            <div class="info-sub-value positive">Last Year:57(+257.89%)</div>
+            <div class="info-sub-value positive">Last Year: 57 (+257.89%)</div>
           </div>
         </div>
         <div class="info-block">
           <div class="info-title">Completion Rate</div>
           <div class="info-value">
             <div class="info-main-value completion-rate">99.53%</div>
-            <div class="info-sub-value positive">WoW:98.93%(+0.6%)</div>
+            <div class="info-sub-value positive">WoW: 98.93% (+0.6%)</div>
           </div>
         </div>
       </div>
@@ -35,10 +35,10 @@
         <canvas id="bubbleChart"></canvas>
       </div>
       <div class="item">
-        <canvas id="myFunnelChart" ></canvas>
+        <canvas id="myFunnelChart"></canvas>
       </div>
-      <div class="item"><canvas id="myAreaChart" ></canvas>
-
+      <div class="item">
+        <canvas id="myAreaChart"></canvas>
       </div>
       <div class="item">a</div>
       <div class="item">a</div>
@@ -47,7 +47,6 @@
 </template>
 
 <script>
-
 import {
   Chart,
   BubbleController,
@@ -60,31 +59,31 @@ import {
   registerables
 } from 'chart.js';
 
-import {FunnelController,TrapezoidElement} from 'chartjs-chart-funnel';
+import { FunnelController, TrapezoidElement } from 'chartjs-chart-funnel';
 
-import {BoxAndWiskers, BoxPlotController} from '@sgratzl/chartjs-chart-boxplot';
+import { BoxAndWiskers, BoxPlotController } from '@sgratzl/chartjs-chart-boxplot';
 
-Chart.register(...registerables, FunnelController,TrapezoidElement);
+Chart.register(...registerables, FunnelController, TrapezoidElement);
 Chart.register(BubbleController, LinearScale, PointElement, Tooltip, Legend);
 Chart.register(LinearScale, CategoryScale, BarElement, BoxPlotController, BoxAndWiskers);
 
 export default {
   name: 'OrderOverview',
   mounted() {
-    // 初始化Chart.js
+    // Initialize Chart.js
     const ctx = document.getElementById('myChart').getContext('2d');
     new Chart(ctx, {
-      type: 'boxplot', // 使用'boxplot'类型，需依赖额外插件
+      type: 'boxplot', // 'boxplot' type requires additional plugin
       data: {
         labels: ['January'],
         datasets: [{
           label: 'Order Data',
           data: [{
-            min: 1,      // 最小值
-            q1: 3,       // 第一四分位数
-            median: 4,   // 中位数
-            q3: 5,       // 第三四分位数
-            max: 11      // 最大值
+            min: 1,      // Minimum value
+            q1: 3,       // First quartile
+            median: 4,   // Median
+            q3: 5,       // Third quartile
+            max: 11      // Maximum value
           }],
           backgroundColor: 'rgba(0, 123, 255, 0.5)',
           borderColor: 'rgba(0, 123, 255, 1)',
@@ -109,7 +108,7 @@ export default {
         datasets: [{
           label: 'Sales Data',
           data: [
-            {x: 10, y: 20, r: 15}, // x: X轴位置, y: Y轴位置, r: 泡泡半径
+            {x: 10, y: 20, r: 15}, // x: X-axis position, y: Y-axis position, r: Bubble radius
             {x: 15, y: 10, r: 10},
             {x: 20, y: 30, r: 20},
             {x: 25, y: 15, r: 12},
@@ -141,64 +140,62 @@ export default {
       }
     });
 
-
-// 获取 canvas 元素的上下文
+    // Get the canvas context for the funnel chart
     const ctx3 = document.getElementById('myFunnelChart').getContext('2d');
     new Chart(ctx3, {
-      type: 'funnel', // 设置图表类型为漏斗图
+      type: 'funnel', // Set chart type to funnel
       data: {
-        labels: ['order_id', 'task_id', 'work_id'], // 标签数组
+        labels: ['order_id', 'task_id', 'work_id'], // Labels array
         datasets: [{
-          label: 'Order Funnel', // 数据集标签
-          data: [100, 60, 47], // 数据数组，代表各阶段的数量
-          backgroundColor: ['#007bff', '#17a2b8', '#28a745'], // 背景颜色
-          borderColor: '#fff', // 边框颜色
-          borderWidth: 1       // 边框宽度
+          label: 'Order Funnel', // Dataset label
+          data: [100, 60, 47], // Data array representing quantities at each stage
+          backgroundColor: ['#007bff', '#17a2b8', '#28a745'], // Background color
+          borderColor: '#fff', // Border color
+          borderWidth: 1       // Border width
         }]
       },
       options: {
-        responsive: true, // 响应式选项
-        indexAxis: 'y',   // 设置 Y 轴为主要轴，这样漏斗图会垂直显示
+        responsive: true, // Responsive option
+        indexAxis: 'y',   // Set Y-axis as the primary axis for vertical funnel
         plugins: {
           legend: {
-            display: true,    // 显示图例
-            position: 'top'   // 图例位置
+            display: true,    // Display legend
+            position: 'top'   // Legend position
           },
           tooltip: {
             callbacks: {
               label: function(context) {
-                return `${context.label}: ${context.raw} 千`; // 设置工具提示显示的格式
+                return `${context.label}: ${context.raw} K`; // Set tooltip display format
               }
             }
           }
         },
         scales: {
           x: {
-            beginAtZero: true, // X轴从零开始
+            beginAtZero: true, // Start X-axis at zero
             title: {
               display: true,
-              text: 'Percentage' // X轴标题
+              text: 'Percentage' // X-axis title
             }
           }
         }
       }
     });
 
-
-// 获取 canvas 元素的上下文
+    // Get the canvas context for the area chart
     const ctx4 = document.getElementById('myAreaChart').getContext('2d');
 
-// 创建堆叠面积图
+    // Create stacked area chart
     new Chart(ctx4, {
-      type: 'line', // 面积图使用 'line' 类型，但需要设置填充属性
+      type: 'line', // Area chart uses 'line' type but needs fill option set
       data: {
-        labels: ['2020', '2021', '2022', '2023', '2024'], // X轴的标签
+        labels: ['2020', '2021', '2022', '2023', '2024'], // X-axis labels
         datasets: [{
-          label: 'Series 1', // 数据集标签
-          data: [800, 1000, 600, 1100, 900], // 数据
-          backgroundColor: 'rgba(0, 123, 255, 0.5)', // 背景颜色，透明以便堆叠显示
-          borderColor: 'rgba(0, 123, 255, 1)', // 边框颜色
-          fill: true, // 关键设置，启用填充区域
+          label: 'Series 1', // Dataset label
+          data: [800, 1000, 600, 1100, 900], // Data
+          backgroundColor: 'rgba(0, 123, 255, 0.5)', // Background color with transparency for stacking
+          borderColor: 'rgba(0, 123, 255, 1)', // Border color
+          fill: true, // Enable area fill
         }, {
           label: 'Series 2',
           data: [400, 500, 300, 700, 600],
@@ -208,25 +205,25 @@ export default {
         }]
       },
       options: {
-        responsive: true, // 响应式设计
+        responsive: true, // Responsive design
         plugins: {
           legend: {
-            display: true, // 显示图例
-            position: 'top' // 图例位置
+            display: true, // Display legend
+            position: 'top' // Legend position
           },
           tooltip: {
-            mode: 'index', // 工具提示的模式
+            mode: 'index', // Tooltip mode
             intersect: false
           }
         },
         scales: {
           x: {
-            beginAtZero: true, // X轴从零开始
-            stacked: true // 关键设置，启用堆叠
+            beginAtZero: true, // Start X-axis at zero
+            stacked: true // Enable stacking
           },
           y: {
-            beginAtZero: true, // Y轴从零开始
-            stacked: true // 关键设置，启用堆叠
+            beginAtZero: true, // Start Y-axis at zero
+            stacked: true // Enable stacking
           }
         }
       }
@@ -245,7 +242,7 @@ html, body {
 .wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* 使 wrapper 占据整个视口高度 */
+  height: 100vh; /* Make wrapper occupy the full viewport height */
 }
 
 .nav-bar {
@@ -310,7 +307,7 @@ html, body {
 }
 
 .container {
-  flex: 1; /* 使 container 占据剩余空间 */
+  flex: 1; /* Make container occupy the remaining space */
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -319,9 +316,9 @@ html, body {
 }
 
 .item {
-  flex: 1 1 calc(33.333% - 10px); /* 3列布局 */
+  flex: 1 1 calc(33.333% - 10px); /* 3-column layout */
   box-sizing: border-box;
-  background: #e0e0e0; /* 背景颜色示例 */
-  padding: 10px; /* 内边距示例 */
+  background: #e0e0e0; /* Example background color */
+  padding: 10px; /* Example padding */
 }
 </style>
