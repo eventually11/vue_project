@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.heat';
-import { mapConfig } from './mapConfig.js';  // 导入 TypeScript 配置
+import { mapConfig } from '..//domain/mapConfig.js';  // 导入 TypeScript 配置
 
 export default {
   name: 'Heatmap',
