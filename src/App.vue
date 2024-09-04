@@ -1,21 +1,45 @@
 <template>
-  <div id="app">
-    <!-- 使用 Heatmap 组件 -->
-    <Heatmap />
+  <div style="display: flex">
+    <div style="height: 100vh">
+      <el-menu
+          router
+          active-text-color="#ffd04b"
+          background-color="#426871"
+          class="el-menu-vertical-demo"
+          text-color="#fff"
+          default-active="/"
+          @select="handleSelect"
+          style="height: 100%;"
+      >
+        <el-menu-item index="/">
+          <el-icon>
+            <Menu/>
+          </el-icon>
+          <span>Global</span>
+        </el-menu-item>
+        <el-menu-item index="/daily">
+          <el-icon>
+            <document/>
+          </el-icon>
+          <span>Daily monitoring</span>
+        </el-menu-item>
+        <el-menu-item index="/map">
+          <el-icon>
+            <setting/>
+          </el-icon>
+          <span>Map Visualization</span>
+        </el-menu-item>
+      </el-menu>
+    </div>
+    <RouterView/>
   </div>
 </template>
 
-<script>
-import Heatmap from './components/map.vue';  // 导入 Heatmap 组件
-
-export default {
-  name: 'App',
-  components: {
-    Heatmap  // 注册 Heatmap 组件
+<script setup>
+const handleSelect = (a) => {
+  if (a === '/') {
+    window.location.reload()
   }
-};
+}
 </script>
 
-<style>
-/* 你可以在这里添加全局样式 */
-</style>
