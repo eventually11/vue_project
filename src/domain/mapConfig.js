@@ -1,36 +1,36 @@
 export const mapConfig = {
-  // 地图的初始中心点，指定地图初次加载时显示的经纬度位置
-  mapCenter: [-12.4083, 130.9032], // [纬度, 经度]
+  // Initial center point of the map, specifying the latitude and longitude position when the map loads
+  mapCenter: [-12.4083, 130.9032], // [Latitude, Longitude]
 
-  // 地图的初始缩放级别，决定地图初次加载时的缩放程度
-  initialZoom: 13, // 缩放级别，值越大地图越放大，越详细
+  // Initial zoom level of the map, determining the zoom level when the map loads
+  initialZoom: 13, // Zoom level, the higher the value, the more zoomed-in the map is
 
-  // 瓦片图层的URL模板，用于加载地图瓦片
+  // URL template for the tile layer, used to load map tiles
   tileLayerUrl: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 
-  // 瓦片图层的配置选项
+  // Configuration options for the tile layer
   tileLayerOptions: {
-    // 最大缩放级别，地图的最大缩放程度
+    // Maximum zoom level, determining the maximum zoom of the map
     maxZoom: 25,
 
-    // 地图右下角显示的版权信息，通常是对地图数据来源的致谢
+    // Attribution displayed at the bottom-right of the map, usually to credit the map data source
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   },
 
-  // 热力图层的配置选项
+  // Configuration options for the heatmap layer
   heatLayerOptions: {
-    // 热力点的半径，以像素为单位，决定热力点的影响范围
+    // Radius of the heat points in pixels, determining the influence range of the heat points
     radius: 25,
 
-    // 热力点的模糊程度，数值越大，热力图越模糊
+    // Blurriness of the heat points, the higher the value, the blurrier the heatmap
     blur: 15,
 
-    // 热力图层的最大缩放级别，超过此级别时不会再增加热力图的详细程度
+    // Maximum zoom level of the heatmap layer, beyond this level, the heatmap detail does not increase
     maxZoom: 17
   },
-  // 热力数据，包含一组数据点，每个数据点由纬度、经度和权重值组成
+  // Heatmap data, consisting of a set of data points where each data point is composed of latitude, longitude, and a weight value
   heatData: [
-    [-12.3409816, 130.8931366, 18.4462],  // [纬度, 经度, 权重值]
+    [-12.3409816, 130.8931366, 18.4462],  // [Latitude, Longitude, Weight Value]
     [-12.4240555, 130.8365323, 5.754],
     [-12.3795265, 130.8489492, 11.8261],
     [-12.4649173, 130.8400948, 0.9831],

@@ -1,7 +1,7 @@
-// 定义 X 轴的标签数组，表示月份
+// Define an array of labels for the X axis, representing months
 export const labels = ['January', 'February', 'March', 'April', 'May'];
 
-// 定义数据集的数值（每个数据点包含 x, y 坐标和 r 半径）
+// Define the dataset values (each data point contains x, y coordinates and r radius)
 export const bubbleData = [
     { x: 10, y: 20, r: 15 },
     { x: 15, y: 10, r: 10 },
@@ -10,48 +10,48 @@ export const bubbleData = [
     { x: 30, y: 25, r: 18 }
 ];
 
-// 定义数据集的标签
+// Define the dataset label
 export const bubbleLabel = 'Sales Data';
 
-// 定义数据集的颜色
+// Define the dataset color
 export const bubbleBackgroundColor = 'rgba(0, 123, 255, 0.5)';
 export const bubbleBorderColor = 'rgba(0, 123, 255, 1)';
 export const bubbleBorderWidth = 1;
 
-// 定义 X 轴的标题
+// Define the X axis title
 export const xAxisTitle = 'X Axis Label';
 
-// 定义 Y 轴的标题
+// Define the Y axis title
 export const yAxisTitle = 'Y Axis Label';
 
-// 图表的完整配置对象
+// Full configuration object for the chart
 export const bubbleChartConfig = {
-    type: 'bubble', // 图表类型，使用 'bubble' 类型创建气泡图
+    type: 'bubble', // Chart type, using 'bubble' to create a bubble chart
     data: {
-        labels: labels, // 引用提取的 X 轴标签数组
+        labels: labels, // Reference the extracted X axis label array
         datasets: [{
-            label: bubbleLabel, // 数据集的标签
-            data: bubbleData, // 数据集的数据
-            backgroundColor: bubbleBackgroundColor, // 数据集的背景颜色
-            borderColor: bubbleBorderColor, // 数据集的边框颜色
-            borderWidth: bubbleBorderWidth // 数据集的边框宽度
+            label: bubbleLabel, // Dataset label
+            data: bubbleData, // Dataset data
+            backgroundColor: bubbleBackgroundColor, // Dataset background color
+            borderColor: bubbleBorderColor, // Dataset border color
+            borderWidth: bubbleBorderWidth // Dataset border width
         }]
     },
     options: {
-        responsive: true, // 启用响应式布局，使图表适应不同的屏幕大小
+        responsive: true, // Enable responsive layout to make the chart adapt to different screen sizes
         scales: {
             x: {
-                beginAtZero: true, // X 轴从零开始
+                beginAtZero: true, // Start X axis at zero
                 title: {
-                    display: true, // 显示 X 轴标题
-                    text: xAxisTitle // X 轴的标题文本
+                    display: true, // Display the X axis title
+                    text: xAxisTitle // X axis title text
                 }
             },
             y: {
-                beginAtZero: true, // Y 轴从零开始
+                beginAtZero: true, // Start Y axis at zero
                 title: {
-                    display: true, // 显示 Y 轴标题
-                    text: yAxisTitle // Y 轴的标题文本
+                    display: true, // Display the Y axis title
+                    text: yAxisTitle // Y axis title text
                 }
             }
         }

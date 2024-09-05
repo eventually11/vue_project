@@ -1,41 +1,41 @@
-// 定义 X 轴的标签数组，表示月份
+// Define an array of labels for the X axis, representing months
 export const labels = ['January'];
 
-// 定义数据集的数值对象，表示箱线图的各个统计值
+// Define the dataset's value object, representing the statistical values for the box plot
 export const boxplotData = [{
-    min: 1,      // 最小值
-    q1: 3,       // 第一四分位数
-    median: 4,   // 中位数
-    q3: 5,       // 第三四分位数
-    max: 11      // 最大值
+    min: 1,      // Minimum value
+    q1: 3,       // First quartile
+    median: 4,   // Median
+    q3: 5,       // Third quartile
+    max: 11      // Maximum value
 }];
 
-// 定义数据集的标签
+// Define the dataset label
 export const boxplotLabel = 'Order Data';
 
-// 定义数据集的颜色
+// Define the dataset color
 export const boxplotBackgroundColor = 'rgba(0, 123, 255, 0.5)';
 export const boxplotBorderColor = 'rgba(0, 123, 255, 1)';
 export const boxplotBorderWidth = 1;
 
-// 图表的完整配置对象
+// Full configuration object for the chart
 export const orderVolumeConfig = {
-    type: 'boxplot', // 图表类型，使用 'boxplot' 类型创建箱线图
+    type: 'boxplot', // Chart type, using 'boxplot' to create a box plot
     data: {
-        labels: labels, // 引用提取的 X 轴标签数组
+        labels: labels, // Reference the extracted X axis label array
         datasets: [{
-            label: boxplotLabel, // 数据集的标签
-            data: boxplotData, // 数据集的箱线图数据
-            backgroundColor: boxplotBackgroundColor, // 数据集的背景颜色
-            borderColor: boxplotBorderColor, // 数据集的边框颜色
-            borderWidth: boxplotBorderWidth // 数据集的边框宽度
+            label: boxplotLabel, // Dataset label
+            data: boxplotData, // Box plot data for the dataset
+            backgroundColor: boxplotBackgroundColor, // Dataset background color
+            borderColor: boxplotBorderColor, // Dataset border color
+            borderWidth: boxplotBorderWidth // Dataset border width
         }]
     },
     options: {
-        responsive: true, // 启用响应式布局，使图表适应不同的屏幕大小
+        responsive: true, // Enable responsive layout to make the chart adapt to different screen sizes
         scales: {
             y: {
-                beginAtZero: true, // Y 轴从零开始
+                beginAtZero: true, // Start the Y axis at zero
             }
         }
     }

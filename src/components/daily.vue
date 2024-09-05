@@ -11,7 +11,7 @@
               :class="['button', { active: isAllSelected }]"
               @click="toggleAll"
           >
-            全选
+            Select All
           </div>
           <div
               v-for="item in options"
@@ -36,28 +36,28 @@
           <div id="chart3"></div>
         </div>
         <div class="chart chart4">
-          <div id="chart4"></div></div>
+          <div id="chart4"></div>
+        </div>
       </div>
       <div class="table-section">
-        <!-- 表格内容 -->
+        <!-- Table content -->
         <div class="">
           <el-table
               stripe
               :data="tableData"
               show-summary
-              sum-text="合计"
+              sum-text="Total"
               max-height="760"
           >
             <el-table-column sortable prop="date" label="Start date"/>
-            <el-table-column sortable prop="order_volume" label="order_volume"/>
-            <el-table-column sortable prop="service_mins" label="service_mins"/>
+            <el-table-column sortable prop="order_volume" label="Order Volume"/>
+            <el-table-column sortable prop="service_mins" label="Service Minutes"/>
           </el-table>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import * as echarts from 'echarts';
@@ -105,7 +105,7 @@ export default {
         { date: '2024-12-30', order_volume: 127, service_mins: 179 },
         { date: '2024-12-31', order_volume: 143, service_mins: 301 },
       ],
-      colorList: ['#0066ff', '#192f6a', '#ff6600', '#800080'], // 统一的颜色数组
+      colorList: ['#0066ff', '#192f6a', '#ff6600', '#800080'], // Unified color array
     };
   },
   computed: {
@@ -269,7 +269,7 @@ export default {
         },
         xAxis: {
           type: 'value',
-          name: 'order_id 的计数',
+          name: 'order_id count',
           axisLabel: {
             formatter: '{value}',
           },
@@ -375,7 +375,7 @@ export default {
   },
   mounted() {
     this.setChartHeights();
-    window.addEventListener('resize', this.setChartHeights); // 当窗口大小改变时，重新计算高度
+    window.addEventListener('resize', this.setChartHeights); // Recalculate heights when window size changes
   },
 };
 </script>
@@ -470,23 +470,23 @@ export default {
   font-size: 20px;
   text-align: center;
   cursor: pointer;
-  background-color: #35494e; /* 默认未选中的颜色 */
+  background-color: #35494e; /* Default unselected color */
   color: white;
   font-weight: 700;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
 .button:not(:last-child) {
-  border-right: none; /* 去掉中间按钮的右边框 */
+  border-right: none; /* Remove right border for middle buttons */
 }
 
 .button.active {
-  background-color: #333333; /* 选中的颜色 */
-  border-color: #333333; /* 选中后的边框颜色 */
+  background-color: #333333; /* Selected color */
+  border-color: #333333; /* Border color for selected state */
 }
 
 .button:hover {
-  background-color: #ebebeb; /* 鼠标悬停时的颜色 */
-  color: #333333; /* 悬停时字体颜色 */
+  background-color: #ebebeb; /* Color on hover */
+  color: #333333; /* Font color on hover */
 }
 </style>

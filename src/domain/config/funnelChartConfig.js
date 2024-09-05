@@ -1,59 +1,59 @@
-// 定义标签数组，表示漏斗图的各个阶段
+// Define an array of labels representing the stages of the funnel chart
 export const labels = ['order_id', 'task_id', 'work_id'];
 
-// 定义数据集的数值数组，表示各个阶段的数据
+// Define the dataset's values array, representing the data for each stage
 export const funnelData = [100, 60, 47];
 
-// 定义数据集的标签
+// Define the dataset label
 export const funnelLabel = 'Order Funnel';
 
-// 定义数据集的颜色数组
+// Define the dataset's array of background colors
 export const funnelBackgroundColor = ['#007bff', '#17a2b8', '#28a745'];
 
-// 定义数据集的边框颜色
+// Define the dataset's border color
 export const funnelBorderColor = '#fff';
 
-// 定义数据集的边框宽度
+// Define the dataset's border width
 export const funnelBorderWidth = 1;
 
-// 定义 X 轴的标题
+// Define the X axis title
 export const xAxisTitle = 'Percentage';
 
-// 图表的完整配置对象
+// Full configuration object for the chart
 export const funnelChartConfig = {
-    type: 'funnel', // 图表类型，使用 'funnel' 类型创建漏斗图
+    type: 'funnel', // Chart type, using 'funnel' to create a funnel chart
     data: {
-        labels: labels, // 引用提取的标签数组
+        labels: labels, // Reference the extracted label array
         datasets: [{
-            label: funnelLabel, // 数据集的标签
-            data: funnelData, // 数据集的数据
-            backgroundColor: funnelBackgroundColor, // 数据集的背景颜色数组
-            borderColor: funnelBorderColor, // 数据集的边框颜色
-            borderWidth: funnelBorderWidth // 数据集的边框宽度
+            label: funnelLabel, // Dataset label
+            data: funnelData, // Dataset data
+            backgroundColor: funnelBackgroundColor, // Array of background colors for the dataset
+            borderColor: funnelBorderColor, // Dataset border color
+            borderWidth: funnelBorderWidth // Dataset border width
         }]
     },
     options: {
-        responsive: true, // 启用响应式布局，使图表适应不同的屏幕大小
-        indexAxis: 'y', // 设置 Y 轴为主要轴，漏斗图垂直显示
+        responsive: true, // Enable responsive layout to make the chart adapt to different screen sizes
+        indexAxis: 'y', // Set the Y axis as the primary axis, displaying the funnel vertically
         plugins: {
             legend: {
-                display: true, // 显示图例
-                position: 'top' // 图例显示在顶部
+                display: true, // Display the legend
+                position: 'top' // Legend position at the top
             },
             tooltip: {
                 callbacks: {
                     label: function (context) {
-                        return `${context.label}: ${context.raw} 千`; // 工具提示中显示的文本
+                        return `${context.label}: ${context.raw}k`; // Text displayed in the tooltip
                     }
                 }
             }
         },
         scales: {
             x: {
-                beginAtZero: true, // X 轴从零开始
+                beginAtZero: true, // Start X axis at zero
                 title: {
-                    display: true, // 显示 X 轴标题
-                    text: xAxisTitle // X 轴的标题文本
+                    display: true, // Display the X axis title
+                    text: xAxisTitle // X axis title text
                 }
             }
         }
