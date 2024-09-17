@@ -1,8 +1,8 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-import HomeView from '@/components/overview.vue'
-import MapView from '@/components/map.vue'
-import DailyView from '@/components/daily.vue'
+import HomeView from '@/pages/main/index.vue'
+import MapView from '@/pages/map/index.vue'
+import DailyView from '@/pages/daily/index.vue'
 
 const routes = [
     { path: '/', component: HomeView },
