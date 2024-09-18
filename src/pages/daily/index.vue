@@ -224,349 +224,325 @@ export default {
       const chartDom = document.getElementById('chart1');
       let myChart = echarts.getInstanceByDom(chartDom);
 
-      // 如果已经有图表实例存在，销毁它
-      if (myChart) {
-        myChart.dispose();
-      }
+ // If the chart instance already exists, destroy it
+if (myChart) {
+    myChart.dispose();
+}
 
-      // 初始化图表
-      myChart = echarts.init(chartDom);
+// Initialize the chart
+myChart = echarts.init(chartDom);
 
-      // 汇总tableData中的order_id数量，根据checkedOptions中的状态
-      const statusCount = this.checkedOptions.reduce((acc, status) => {
-        // 根据状态过滤tableData，然后计算订单ID的数量
-        acc[status] = this.tableData.filter(item => item.status === status).length; // 计算每种状态的order_id数量
-        return acc;
-      }, {});
+// Calculate order count based on selected status
+const statusCount = this.checkedOptions.reduce((acc, status) => {
+    acc[status] = this.tableData.filter(item => item.status === status).length;
+    return acc;
+}, {});
 
-      // 构建图表数据
-      const seriesData = this.checkedOptions.map((status, index) => ({
-        value: statusCount[status],
-        name: status,
-        itemStyle: {color: this.colorList[index]},
-      }));
+// Construct chart data
+const seriesData = this.checkedOptions.map((status, index) => ({
+    value: statusCount[status],
+    name: status,
+    itemStyle: { color: this.colorList[index] },
+}));
 
-      const option = {
-        title: {
-          text: 'Order Proportion',
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '{a} <br/>{b}: {c} ({d}%)',
-        },
-        legend: {
-          orient: 'vertical',
-          right: '10',
-          top: 'center',
-          data: this.checkedOptions, // 使用checkedOptions更新图例
-        },
-        series: [
-          {
+// Define chart options
+const option = {
+    title: {
+        text: 'Order Proportion',
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)',
+    },
+    legend: {
+        orient: 'vertical',
+        right: '10',
+        top: 'center',
+        data: this.checkedOptions,
+    },
+    series: [
+        {
             name: 'status',
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
             label: {
-              show: true,
-              position: 'outside',
-              formatter: '{b}\n{c} ({d}%)',
+                show: true,
+                position: 'outside',
+                formatter: '{b}\n{c} ({d}%)',
             },
             labelLine: {
-              show: true,
+                show: true,
             },
-            data: seriesData, // 使用根据checkedOptions和tableData生成的图表数据
-          },
-        ],
-      };
+            data: seriesData,
+        },
+    ],
+};
 
       myChart.setOption(option);
     }
     ,
-    initChart2() {
-      const chartDom = document.getElementById('chart2');
-      let myChart = echarts.getInstanceByDom(chartDom);
+initChart2() {
+  const chartDom = document.getElementById('chart2');
+  let myChart = echarts.getInstanceByDom(chartDom);
 
-      // 如果已经有图表实例存在，销毁它
-      if (myChart) {
-        myChart.dispose();
-      }
-
-      // 重新初始化图表
-      myChart = echarts.init(chartDom);
-
-      // 过滤出根据checkedOptions选中的数据
-      const filteredData = this.tableData.filter(item =>
-          this.checkedOptions.includes(item.status)
-      );
-
-      // 初始化小时分布数组，每个元素代表每个小时的订单数量
-      const hourDistribution = Array(24).fill(0);
-
-      // 计算每小时的数据分布，按 order_id 数量统计
-      filteredData.forEach(item => {
-        const hour = parseInt(item.time.split(':')[0], 10); // 获取小时部分
-        hourDistribution[hour] += 1; // 每个小时的订单数量（order_id计数）
-      });
-
-      // 判断是否所有小时的订单数量都为 0
-      const hasData = hourDistribution.some(value => value > 0);
-
-      // 如果所有小时的订单数量都为 0，打印错误并返回
-      if (!hasData) {
-        console.error("No data available for the selected status.");
-        return;
-      }
-
-      // 找到最早有订单的小时和最晚有订单的小时
-      const firstHour = hourDistribution.findIndex(value => value > 0);
-      const lastHour = hourDistribution.findLastIndex(value => value > 0);
-
-
-      // 只保留有数据的小时范围的订单数量和对应的小时标签
-      const trimmedHourDistribution = hourDistribution.slice(firstHour, lastHour + 1);
-      const hourLabels = Array.from({length: 24}, (_, i) => i.toString().padStart(2, '0')).slice(firstHour, lastHour + 1);
-      const option = {
-        title: {
-          text: 'Hourly distribution',
-        },
-        tooltip: {
-          trigger: 'axis',
-        },
-        xAxis: {
-          type: 'category',
-          data: hourLabels, // 动态生成的小时标签
-          axisLabel: {
-            interval: 0,
-          },
-        },
-        yAxis: {
-          type: 'value',
-          name: 'Order Count',
-        },
-        series: [
-          {
-            name: 'Order Count by Hour',
-            type: 'bar',
-            data: trimmedHourDistribution, // 使用根据数据动态生成的分布
-            itemStyle: {
-              color: this.colorList[0], // 自定义颜色
-            },
-          },
-        ],
-      };
-
-      myChart.setOption(option);
-    },
-    initChart3() {
-      const chartDom = document.getElementById('chart3');
-      let myChart = echarts.getInstanceByDom(chartDom);
-
-      // 如果已经有图表实例存在，销毁它
-      if (myChart) {
-        myChart.dispose();
-      }
-
-      // 重新初始化图表
-      myChart = echarts.init(chartDom);
-
-      // 计算每种状态的订单数量
-      const statusCount = this.checkedOptions.reduce((acc, status) => {
-        acc[status] = this.tableData
-            .filter(item => item.status === status)
-            .reduce((total, item) => total + 1, 0); // 统计order_id的数量（每个订单作为一个计数）
-        return acc;
-      }, {});
-
-      // 生成柱状图的数据
-      const seriesData = this.checkedOptions.map((status, index) => ({
-        value: statusCount[status],
-        name: status,
-        itemStyle: {color: this.colorList[index]},
-      }));
-
-      const option = {
-        title: {
-          text: 'Order volume',
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow',
-          },
-        },
-        legend: {
-          top: 40,
-          left: 'center',
-          data: this.checkedOptions, // 动态生成图例
-        },
-        xAxis: {
-          type: 'value',
-          name: 'Order Count',
-          axisLabel: {
-            formatter: '{value}',
-          },
-        },
-        yAxis: {
-          type: 'category',
-          data: this.checkedOptions, // 根据checkedOptions生成Y轴标签
-        },
-        series: [
-          {
-            name: 'status',
-            type: 'bar',
-            data: seriesData, // 使用根据checkedOptions和tableData生成的图表数据
-            label: {
-              show: true,
-              position: 'insideRight',
-              formatter: '{c}', // 显示订单计数
-            },
-          },
-        ],
-      };
-
-      myChart.setOption(option);
-    }
-    ,initChart4() {
-      const chartDom = document.getElementById('chart4');
-      let myChart = echarts.getInstanceByDom(chartDom);
-
-      // 如果已经有图表实例存在，销毁它
-      if (myChart) {
-        myChart.dispose();
-      }
-
-      // 重新初始化图表
-      myChart = echarts.init(chartDom);
-
-      // 根据状态筛选 tableData 中的数据
-      const filteredData = this.tableData.filter(item => this.checkedOptions.includes(item.status));
-
-      // 按状态分组数据
-      const statusGroups = {
-        delivered: [],
-        'on the way': [],
-        'waiting for accept': [],
-        'waiting for courier': [],
-      };
-
-      // 将选中的数据添加到对应的状态组中
-      filteredData.forEach(item => {
-        if (statusGroups[item.status]) {
-          statusGroups[item.status].push(item.service_fee);
-        }
-      });
-
-      // 计算箱线图所需的 min, Q1, median, Q3, max
-      const calculateBoxPlotData = (data) => {
-        if (data.length === 0) return [0, 0, 0, 0, 0];
-        data.sort((a, b) => a - b);
-
-        const min = data[0];
-        const max = data[data.length - 1];
-        const median = data[Math.floor(data.length / 2)];
-        const q1 = data[Math.floor(data.length / 4)];
-        const q3 = data[Math.floor(3 * data.length / 4)];
-
-        return [min, q1, median, q3, max];
-      };
-
-      // 对选中的状态进行箱线图数据计算
-      const selectedData = this.checkedOptions.map(status => {
-        return calculateBoxPlotData(statusGroups[status]);
-      });
-
-      // 更新 X 轴的状态名称
-      const xAxisData = this.checkedOptions;
-      const colors = this.checkedOptions.map((_, index) => this.colorList[index]);
-
-      const option = {
-        title: {
-          text: 'Service Fee Comparison',
-        },
-        tooltip: {
-          trigger: 'item',
-          axisPointer: {
-            type: 'shadow',
-          },
-        },
-        xAxis: {
-          type: 'category',
-          data: xAxisData,  // 动态更新 X 轴数据
-        },
-        yAxis: {
-          type: 'value',
-          min: 0,  // 根据实际数据设置最小值
-        },
-        series: [
-          {
-            name: 'service fee',
-            type: 'boxplot',
-            data: selectedData.map((item, index) => ({
-              value: item,
-              itemStyle: {
-                color: colors[index],
-                borderColor: colors[index],
-              },
-            })),
-            tooltip: {
-              formatter: function (param) {
-                return [
-                  'Status: ' + param.name,
-                  'Upper: ' + param.data.value[4],
-                  'Q3: ' + param.data.value[3],
-                  'Median: ' + param.data.value[2],
-                  'Q1: ' + param.data.value[1],
-                  'Lower: ' + param.data.value[0],
-                ].join('<br/>');
-              },
-            },
-          },
-        ],
-      };
-
-      myChart.setOption(option);
-    }
-    ,
-// 加载 CSV 并解析数据
-    loadTableDataFromCSV(csvUrl) {
-      Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        complete: (results) => {
-          // 解析 CSV 后的结果
-          this.tableData = results.data.map(row => ({
-            date: row.date,
-            order_id: parseInt(row.order_id, 10), // 将 order_id 转换为整数
-            service_fee: parseFloat(row.service_fee), // 将 service_fee 转换为浮点数
-            status: row.status,
-            time: row.time // 保留时间
-          }));
-        },
-        error: (err) => {
-          console.error('Error parsing CSV:', err);
-        }
-      });
-    }
-
-  },
-  mounted() {
-    this.setChartHeights();
-    this.loadTableDataFromCSV(orderCsv)
-    window.addEventListener('resize', this.setChartHeights); // 当窗口大小改变时，重新计算高度
-  },
-  beforeDestroy() {
-    const chart1 = echarts.getInstanceByDom(document.getElementById('chart1'));
-    if (chart1) chart1.dispose();
-
-    const chart2 = echarts.getInstanceByDom(document.getElementById('chart2'));
-    if (chart2) chart2.dispose();
-
-    const chart3 = echarts.getInstanceByDom(document.getElementById('chart3'));
-    if (chart3) chart3.dispose();
-
-    const chart4 = echarts.getInstanceByDom(document.getElementById('chart4'));
-    if (chart4) chart4.dispose();
+  // Dispose of existing chart instance
+  if (myChart) {
+    myChart.dispose();
   }
+
+  // Initialize the chart
+  myChart = echarts.init(chartDom);
+
+  // Filter data based on selected options
+  const filteredData = this.tableData.filter(item =>
+    this.checkedOptions.includes(item.status)
+  );
+
+  // Initialize hour distribution array
+  const hourDistribution = Array(24).fill(0);
+
+  // Calculate hourly distribution based on order count
+  filteredData.forEach(item => {
+    const hour = parseInt(item.time.split(':')[0], 10);
+    hourDistribution[hour] += 1;
+  });
+
+  const hasData = hourDistribution.some(value => value > 0);
+
+  if (!hasData) {
+    console.error("No data available for the selected status.");
+    return;
+  }
+
+  const firstHour = hourDistribution.findIndex(value => value > 0);
+  const lastHour = hourDistribution.findLastIndex(value => value > 0);
+
+  const trimmedHourDistribution = hourDistribution.slice(firstHour, lastHour + 1);
+  const hourLabels = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0')).slice(firstHour, lastHour + 1);
+  
+  const option = {
+    title: { text: 'Hourly distribution' },
+    tooltip: { trigger: 'axis' },
+    xAxis: {
+      type: 'category',
+      data: hourLabels,
+      axisLabel: { interval: 0 }
+    },
+    yAxis: { type: 'value', name: 'Order Count' },
+    series: [{
+      name: 'Order Count by Hour',
+      type: 'bar',
+      data: trimmedHourDistribution,
+      itemStyle: { color: this.colorList[0] },
+    }]
+  };
+
+  myChart.setOption(option);
+},
+
+initChart3() {
+  const chartDom = document.getElementById('chart3');
+  let myChart = echarts.getInstanceByDom(chartDom);
+
+  // Dispose of existing chart instance
+  if (myChart) {
+    myChart.dispose();
+  }
+
+  // Initialize the chart
+  myChart = echarts.init(chartDom);
+
+  // Calculate the number of orders for each status
+  const statusCount = this.checkedOptions.reduce((acc, status) => {
+    acc[status] = this.tableData
+      .filter(item => item.status === status)
+      .reduce((total, item) => total + 1, 0);
+    return acc;
+  }, {});
+
+  const seriesData = this.checkedOptions.map((status, index) => ({
+    value: statusCount[status],
+    name: status,
+    itemStyle: { color: this.colorList[index] },
+  }));
+
+  const option = {
+    title: { text: 'Order volume' },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'shadow' }
+    },
+    legend: {
+      top: 40,
+      left: 'center',
+      data: this.checkedOptions
+    },
+    xAxis: {
+      type: 'value',
+      name: 'Order Count',
+      axisLabel: { formatter: '{value}' }
+    },
+    yAxis: {
+      type: 'category',
+      data: this.checkedOptions
+    },
+    series: [{
+      name: 'status',
+      type: 'bar',
+      data: seriesData,
+      label: {
+        show: true,
+        position: 'insideRight',
+        formatter: '{c}',
+      },
+    }]
+  };
+
+  myChart.setOption(option);
+}
+
+      myChart.setOption(option);
+    }
+initChart4() {
+  const chartDom = document.getElementById('chart4');
+  let myChart = echarts.getInstanceByDom(chartDom);
+
+  // Dispose of existing chart instance
+  if (myChart) {
+    myChart.dispose();
+  }
+
+  // Reinitialize the chart
+  myChart = echarts.init(chartDom);
+
+  // Filter data based on selected options
+  const filteredData = this.tableData.filter(item => this.checkedOptions.includes(item.status));
+
+  // Group data by status
+  const statusGroups = {
+    delivered: [],
+    'on the way': [],
+    'waiting for accept': [],
+    'waiting for courier': [],
+  };
+
+  // Add selected data to corresponding groups
+  filteredData.forEach(item => {
+    if (statusGroups[item.status]) {
+      statusGroups[item.status].push(item.service_fee);
+    }
+  });
+
+  // Calculate box plot data (min, Q1, median, Q3, max)
+  const calculateBoxPlotData = (data) => {
+    if (data.length === 0) return [0, 0, 0, 0, 0];
+    data.sort((a, b) => a - b);
+
+    const min = data[0];
+    const max = data[data.length - 1];
+    const median = data[Math.floor(data.length / 2)];
+    const q1 = data[Math.floor(data.length / 4)];
+    const q3 = data[Math.floor(3 * data.length / 4)];
+
+    return [min, q1, median, q3, max];
+  };
+
+  // Compute box plot data for selected statuses
+  const selectedData = this.checkedOptions.map(status => {
+    return calculateBoxPlotData(statusGroups[status]);
+  });
+
+  // Update x-axis labels and colors
+  const xAxisData = this.checkedOptions;
+  const colors = this.checkedOptions.map((_, index) => this.colorList[index]);
+
+  const option = {
+    title: {
+      text: 'Service Fee Comparison',
+    },
+    tooltip: {
+      trigger: 'item',
+      axisPointer: {
+        type: 'shadow',
+      },
+    },
+    xAxis: {
+      type: 'category',
+      data: xAxisData,
+    },
+    yAxis: {
+      type: 'value',
+      min: 0,
+    },
+    series: [
+      {
+        name: 'service fee',
+        type: 'boxplot',
+        data: selectedData.map((item, index) => ({
+          value: item,
+          itemStyle: {
+            color: colors[index],
+            borderColor: colors[index],
+          },
+        })),
+        tooltip: {
+          formatter: function (param) {
+            return [
+              'Status: ' + param.name,
+              'Upper: ' + param.data.value[4],
+              'Q3: ' + param.data.value[3],
+              'Median: ' + param.data.value[2],
+              'Q1: ' + param.data.value[1],
+              'Lower: ' + param.data.value[0],
+            ].join('<br/>');
+          },
+        },
+      },
+    ],
+  };
+
+  myChart.setOption(option);
+},
+
+loadTableDataFromCSV(csvUrl) {
+  Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    complete: (results) => {
+      this.tableData = results.data.map(row => ({
+        date: row.date,
+        order_id: parseInt(row.order_id, 10),
+        service_fee: parseFloat(row.service_fee),
+        status: row.status,
+        time: row.time
+      }));
+    },
+    error: (err) => {
+      console.error('Error parsing CSV:', err);
+    }
+  });
+}
+  },
+mounted() {
+  this.setChartHeights();
+  this.loadTableDataFromCSV(orderCsv);
+  window.addEventListener('resize', this.setChartHeights); // Recalculate heights on window resize
+},
+beforeDestroy() {
+  const chart1 = echarts.getInstanceByDom(document.getElementById('chart1'));
+  if (chart1) chart1.dispose();
+
+  const chart2 = echarts.getInstanceByDom(document.getElementById('chart2'));
+  if (chart2) chart2.dispose();
+
+  const chart3 = echarts.getInstanceByDom(document.getElementById('chart3'));
+  if (chart3) chart3.dispose();
+
+  const chart4 = echarts.getInstanceByDom(document.getElementById('chart4'));
+  if (chart4) chart4.dispose();
+}
+
 
 };
 </script>
@@ -594,7 +570,6 @@ export default {
   border-radius: 8px;
   min-width: 300px;
 }
-
 
 .table-section {
   display: flex;
@@ -661,23 +636,24 @@ export default {
   font-size: 20px;
   text-align: center;
   cursor: pointer;
-  background-color: #35494e; /* 默认未选中的颜色 */
+  background-color: #35494e;
   color: white;
   font-weight: 700;
   transition: background-color 0.3s, border-color 0.3s;
 }
 
 .button:not(:last-child) {
-  border-right: none; /* 去掉中间按钮的右边框 */
+  border-right: none;
 }
 
 .button.active {
-  background-color: #333333; /* 选中的颜色 */
-  border-color: #333333; /* 选中后的边框颜色 */
+  background-color: #333333;
+  border-color: #333333;
 }
 
 .button:hover {
-  background-color: #ebebeb; /* 鼠标悬停时的颜色 */
-  color: #333333; /* 悬停时字体颜色 */
+  background-color: #ebebeb;
+  color: #333333;
 }
+
 </style>
