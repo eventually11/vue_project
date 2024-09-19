@@ -280,8 +280,7 @@ const option = {
 };
 
       myChart.setOption(option);
-    }
-    ,
+    },
 initChart2() {
   const chartDom = document.getElementById('chart2');
   let myChart = echarts.getInstanceByDom(chartDom);
@@ -399,11 +398,9 @@ initChart3() {
     }]
   };
 
-  myChart.setOption(option);
-}
 
       myChart.setOption(option);
-    }
+    },
 initChart4() {
   const chartDom = document.getElementById('chart4');
   let myChart = echarts.getInstanceByDom(chartDom);
