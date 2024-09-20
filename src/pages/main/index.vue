@@ -84,7 +84,7 @@
               :data="tableData"
               max-height="355"
               show-summary
-              sum-text="合计"
+              sum-text="sum"
           >
             <el-table-column sortable prop="date" label="Start date"/>
             <el-table-column sortable prop="order_volume" label="order_volume"/>
@@ -116,21 +116,22 @@ import {
   BarElement,
   registerables
 } from 'chart.js';import {FunnelController, TrapezoidElement} from 'chartjs-chart-funnel';
-import {BoxAndWiskers, BoxPlotController} from '@sgratzl/chartjs-chart-boxplot';
-import { orderVolumeConfig, loadBoxplotDataFromCSV } from './config/orderVolumeConfig'; // 加载箱线图 CSV 数据
+import { BoxAndWiskers, BoxPlotController } from '@sgratzl/chartjs-chart-boxplot';
+import { orderVolumeConfig, loadBoxplotDataFromCSV } from './config/orderVolumeConfig'; 
 import { bubbleChartConfig, loadBubbleChartDataFromCSV } from './config/bubbleChartConfig';
-import { funnelChartConfig, loadFunnelChartDataFromCSV } from './config/funnelChartConfig'; // 加载漏斗图CSV函数
+import { funnelChartConfig, loadFunnelChartDataFromCSV } from './config/funnelChartConfig'; 
 import { loadAreaChartDataFromCSV, areaChartConfig } from './config/areaChartConfig';
 import { orderTendencyChartConfig, loadOrderTendencyChartDataFromCSV } from './config/orderTendencyChartConfig';
-import { loadTableDataFromCSV, tableData } from './config/tableData'; // 导入表格数据和加载函数
-import { infoConfig, loadInfoConfigFromCSV } from './config/infoConfig'; // 加载 infoConfig
+import { loadTableDataFromCSV, tableData } from './config/tableData'; 
+import { infoConfig, loadInfoConfigFromCSV } from './config/infoConfig'; 
 import csv from './csv/area.csv?url';
 import bubbleCsv from './csv/bubble.csv?url';
 import funnelCsv from './csv/funnel.csv?url';
-import infoCsv from './csv/info.csv?url'; // 引入 info CSV 文件
-import orderTendencyCsv from './csv/orderTendency.csv?url'; // 加载 orderTendency CSV 文件
-import orderVolumeCsv from './csv/orderVolume.csv?url'; // 加载 orderVolume CSV 文件
-import tableCsv from './csv/tableData.csv?url'; // 加载表格数据的 CSV 文件
+import infoCsv from './csv/info.csv?url'; 
+import orderTendencyCsv from './csv/orderTendency.csv?url'; 
+import orderVolumeCsv from './csv/orderVolume.csv?url'; 
+import tableCsv from './csv/tableData.csv?url'; 
+
 
 
 Chart.register(...registerables, FunnelController, TrapezoidElement);
@@ -141,13 +142,13 @@ export default {
   name: 'OrderOverview',
   setup() {
     onMounted(() => {
-      // 箱线图实例
+      // Box plot instance
       const orderVolumeChart = new Chart(document.getElementById('myOrderVolumeChart').getContext('2d'), orderVolumeConfig);
-      loadBoxplotDataFromCSV(orderVolumeCsv, orderVolumeChart); // 从 CSV 加载箱线图数据
+      loadBoxplotDataFromCSV(orderVolumeCsv, orderVolumeChart); // Load box plot data from CSV
 
-      // 漏斗图的实例化
+      // Funnel chart instance
       const funnelChart = new Chart(document.getElementById('myFunnelChart').getContext('2d'), funnelChartConfig);
-      loadFunnelChartDataFromCSV(funnelCsv, funnelChart); // 加载漏斗图的CSV数据
+      loadFunnelChartDataFromCSV(funnelCsv, funnelChart); // Load funnel chart data from CSV
 
       const chart = new Chart(document.getElementById('myAreaChart').getContext('2d'), areaChartConfig);
       loadAreaChartDataFromCSV(csv, chart);
@@ -155,13 +156,14 @@ export default {
       const bubbleChart = new Chart(document.getElementById('bubbleChart').getContext('2d'), bubbleChartConfig);
       loadBubbleChartDataFromCSV(bubbleCsv, bubbleChart);
 
-
-      // 订单趋势图实例
+      // Order tendency chart instance
       const orderTendencyChart = new Chart(document.getElementById('orderTendencyChart').getContext('2d'), orderTendencyChartConfig);
-      loadOrderTendencyChartDataFromCSV(orderTendencyCsv, orderTendencyChart); // 从 CSV 加载订单趋势数据
-      // 加载 infoConfig 的 CSV 数据
-      loadInfoConfigFromCSV(infoCsv); // 从CSV加载 infoConfig 数据
-      // 从 CSV 加载表格数据
+      loadOrderTendencyChartDataFromCSV(orderTendencyCsv, orderTendencyChart); // Load order tendency data from CSV
+      
+      // Load infoConfig data from CSV
+      loadInfoConfigFromCSV(infoCsv); // Load infoConfig data from CSV
+      
+      // Load table data from CSV
       loadTableDataFromCSV(tableCsv);
     });
 
@@ -184,7 +186,7 @@ html, body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh; /* 使 wrapper 占据整个视口高度 */
+  height: 100vh; /*  wrapper whole window height */
 }
 
 .nav-bar {
@@ -249,7 +251,7 @@ html, body {
 }
 
 .container {
-  flex: 1; /* 使 container 占据剩余空间 */
+  flex: 1; /* let container occupy left room */
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -258,10 +260,10 @@ html, body {
 }
 
 .item {
-  flex: 1 1 calc(33.333% - 20px); /* 3列布局 */
+  flex: 1 1 calc(33.333% - 20px); /* 3 columns */
   box-sizing: border-box;
   height: 355px;
-  min-width: 200px; /* 设置最小宽度以确保小屏幕下不会太窄 */
+  min-width: 200px; /* min width make sure small screen wont be too narrow */
   //background: #e0e0e0;
 }
 </style>

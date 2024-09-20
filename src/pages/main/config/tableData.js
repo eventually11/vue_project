@@ -1,10 +1,10 @@
 import Papa from 'papaparse';
-import { reactive } from 'vue'; // 使用 reactive 使 tableData 响应式
+import { reactive } from 'vue'; // Using reactive to make tableData responsive
 
-// 初始化 tableData，数据为空
+// Initialize tableData as empty
 export const tableData = reactive([]);
 
-// 从 CSV 文件加载表格数据的函数
+// Function to load table data from a CSV file
 export function loadTableDataFromCSV(csvUrl) {
     Papa.parse(csvUrl, {
         download: true,
@@ -12,7 +12,7 @@ export function loadTableDataFromCSV(csvUrl) {
         complete: function(results) {
             const data = results.data;
 
-            // 将 CSV 中的数据映射到 tableData 中
+            // Map data from CSV to tableData
             data.forEach(row => {
                 tableData.push({
                     date: row.date,
